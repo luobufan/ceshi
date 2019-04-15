@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.accp.dao.StudentDao">
+    <select id="findAll" resultMap="map">
+        SELECT `id`,`name`,student.`gid`,grade.`gid`,grade.`gname` FROM student,grade WHERE
+        student.`gid`=grade.`gid`
+    </select>
+    <select id="findid" resultMap="map">
+        SELECT `id`,`name`,student.`gid`,grade.`gid`,grade.`gname` FROM student,grade WHERE
+        student.`gid`=grade.`gid` and id=#{id}
+    </select>
+    <select id="findGrade" resultType="Grade">
+        select gid,gname from grade
+    </select>
+    <insert id="insert" parameterType="Student">
+        insert into
+        student(`name`,`gid`)values(#{name},#{grade.gid})
+    </insert>
+    <update id="update" parameterType="Student">
+        UPDATE `student` SET
+        name=#{name},gid=#{grade.gid} WHERE id=#{id}
+    </update>
+    <delete id="delete" parameterType="int">
+        delete from student where id=#{id}
+    </delete>
+    <resultMap type="Student" id="map">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <association property="grade" javaType="Grade">
+            <id property="gid" column="gid"></id>
+            <result property="gname" column="gname"></result>
+        </association>
+    </resultMap>
+</mapper>
